@@ -1,4 +1,3 @@
-
 pub trait ObjectContainer<P, D> {
     fn draw(
         &self,

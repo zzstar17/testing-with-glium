@@ -1,3 +1,5 @@
+use std::path::Path;
+
 use crate::objects::renderable_3d_object::HasRenderable3dObject;
 use crate::shaders::renderable_3d_object_shader::Renderable3dObjectShader;
 use cgmath::{Matrix4, Point3, Vector3};
@@ -24,7 +26,7 @@ pub struct Renderable3dObjectContainerDrawData<'a, 'b, 'c, 'd> {
 impl<Obj: HasRenderable3dObject> Renderable3dObjectContainer<Obj> {
     pub fn new(
         display: &glium::Display,
-        model_path: &str,
+        model_path: &Path,
         texture_bytes: &dyn std::convert::AsRef<[u8]>,
     ) -> Self {
         Self {

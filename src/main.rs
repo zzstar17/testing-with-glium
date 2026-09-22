@@ -4,7 +4,11 @@ extern crate cgmath;
 extern crate image;
 extern crate num_traits;
 
-use crate::containers::renderable_3d_object_container::{Renderable3dObjectContainer, Renderable3dObjectContainerDrawData};
+use std::path::Path;
+
+use crate::containers::renderable_3d_object_container::{
+    Renderable3dObjectContainer, Renderable3dObjectContainerDrawData,
+};
 use crate::objects::kakyoin::Kakyoin;
 use cgmath::{Euler, Point3, Rad, Vector3};
 use glium::{glutin, Surface};
@@ -17,6 +21,7 @@ mod objects;
 mod shaders;
 
 use camera::Camera;
+use common::ToArray;
 use containers::{
     container::ObjectContainer,
     simple_containers::{CubeContainer, CubeContainerDrawData, CubeContainerPrograms},
@@ -27,7 +32,6 @@ use shaders::{
     programs,
     programs::PostProcessingEffects,
 };
-use common::ToArray;
 
 struct Mouse {
     delta_x: f32,
@@ -42,7 +46,6 @@ struct Programs {
     main_framebuffer: programs::MainFramebufferProgram,
     skybox: programs::SkyBoxProgram,
 }
-
 
 fn main() {
     let event_loop = glutin::event_loop::EventLoop::new();
@@ -129,14 +132,16 @@ fn main() {
     cube_container.generate_cubes();
     println!("Created cubes");
 
-    let mut kakyoin_container: Renderable3dObjectContainer<Kakyoin> = 
+    let mut kakyoin_container: Renderable3dObjectContainer<Kakyoin> =
         Renderable3dObjectContainer::new(
-            &display, 
-            "./assets/objects/kakyoin/kakyoin.obj", 
-            &include_bytes!("../assets/objects/kakyoin/Kakyoin.png")
+            &display,
+            &Path::new("./assets/objects/kakyoin/Kakyoin.obj"),
+            &include_bytes!("../assets/objects/kakyoin/Kakyoin.png"),
         );
 
-    kakyoin_container.objects.push(Kakyoin::new(Point3::new(5.0, 2.0, 10.0)));
+    kakyoin_container
+        .objects
+        .push(Kakyoin::new(Point3::new(5.0, 2.0, 10.0)));
     println!("Loaded kakyoins");
 
     let main_framebuffer_shader =
@@ -302,7 +307,7 @@ fn main() {
                             // todo: repeated code
                             if was_pressed {
                                 camera.speed = 30.0;
-                            } 
+                            }
                             else {
                                 camera.speed = 4.0;
                             }
@@ -384,9 +389,9 @@ fn main() {
         let delta_time = current_frame_time - last_frame_time;
 
         kakyoin_container.objects[0].object.rotation = Euler {
-            x: Rad(time),
-            y: Rad(time / 2.0),
-            z: Rad(time / 3.0),
+            x: Rad(0.0),
+            y: Rad(time),
+            z: Rad(0.0),
         };
         kakyoin_container.objects[0].object.update_model();
 
@@ -460,9 +465,9 @@ fn main() {
         );
 
         let ligths: [&PointLight; 4] = [
-            &cube_container.light_cubes[0].light, 
-            &cube_container.light_cubes[1].light, 
-            &cube_container.light_cubes[2].light, 
+            &cube_container.light_cubes[0].light,
+            &cube_container.light_cubes[1].light,
+            &cube_container.light_cubes[2].light,
             &cube_container.light_cubes[3].light
         ];
 

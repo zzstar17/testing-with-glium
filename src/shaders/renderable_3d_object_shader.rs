@@ -3,8 +3,9 @@ use glium::{Display, VertexBuffer};
 
 use crate::shaders::common::{load_srgb_texture, Material};
 use obj::{load_obj, Obj};
-use std::fs::File;
+use std::fs::{self, File};
 use std::io::BufReader;
+use std::path::Path;
 
 pub struct Renderable3dObjectShader {
     pub vertex_buffer: VertexBuffer<Vertex3d>,
@@ -15,9 +16,14 @@ pub struct Renderable3dObjectShader {
 impl Renderable3dObjectShader {
     pub fn new(
         display: &Display,
-        model_path: &str,
+        model_path: &Path,
         texture_bytes: &dyn std::convert::AsRef<[u8]>,
     ) -> Self {
+        println!(
+            "path: {:?} {}",
+            model_path.as_os_str(),
+            fs::exists(model_path).unwrap()
+        );
         let input = BufReader::new(File::open(model_path).unwrap());
         let obj: Obj<Vertex3d> = load_obj(input).unwrap();
 

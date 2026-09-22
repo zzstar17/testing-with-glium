@@ -17,12 +17,12 @@ impl CubeShader {
                 diffuse: load_srgb_texture(
                     display,
                     &include_bytes!("../../assets/container2.png"),
-                    image::ImageFormat::Png
+                    image::ImageFormat::Png,
                 ),
                 specular: load_srgb_texture(
                     display,
                     &include_bytes!("../../assets/container2_specular.png"),
-                    image::ImageFormat::Png
+                    image::ImageFormat::Png,
                 ),
                 shininess: 32.0,
             },
